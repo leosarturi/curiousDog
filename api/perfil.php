@@ -1,5 +1,5 @@
 <?php 
-require 'conexao.php';
+require '/var/task/user/api/conexao.php';
 session_start();
 $seguidores=0;
 $seguindo=0;
@@ -30,7 +30,7 @@ if($pegarperfil->rowCount()==1){
 
 }
 }else{
-  header("Location: home.php");
+  header("Location: /api/home.php");
 }
 
 if($pegarperfil!=false){
@@ -55,12 +55,12 @@ $seguindo = $linha->seguindo;
   <meta charset="UTF-8">
   <title>CuriousDog</title>
 <?php 
-require 'cssheader.php';
+require '/var/task/user/api/cssheader.php';
 ?>
 </head>
 <body>
     <?php 
-    require 'menu.php';
+    require '/var/task/user/api/menu.php';
     
     ?>
 
@@ -423,7 +423,7 @@ function ModalSeguidores(usuario){
  $("#ModalSeguidores").empty();
     for(let [index,d] of dados.entries()){   
       
-                $("#ModalSeguidores").append('<div class="dispseg"><a href="perfil.php?' + d.usuario +'"><img src="'+ d.foto+'"><span class="dispn">'+ d.apelido + '</span></a></div>');
+                $("#ModalSeguidores").append('<div class="dispseg"><a href="api/perfil.php?' + d.usuario +'"><img src="'+ d.foto+'"><span class="dispn">'+ d.apelido + '</span></a></div>');
         console.log(d);
 
     
@@ -444,7 +444,7 @@ function ModalSeguindo(usuario){
  $("#ModalSeguidores").empty();
     for(let [index,d] of dados.entries()){   
       
-                $("#ModalSeguidores").append('<div class="dispseg"><a href="perfil.php?' + d.usuario +'"><img src="'+ d.foto+'"><span class="dispn">'+ d.apelido + '</span></a></div>');
+                $("#ModalSeguidores").append('<div class="dispseg"><a href="api/perfil.php?' + d.usuario +'"><img src="'+ d.foto+'"><span class="dispn">'+ d.apelido + '</span></a></div>');
         console.log(d);
 
     

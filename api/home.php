@@ -4,15 +4,17 @@
   <meta charset="utf-8">
   <title></title>
   <?php 
-  require 'cssheader.php';
+  require '/var/task/user/api/cssheader.php';
   ?>
 </head>
 <body >
 <img src="pic/logo4.png" id="logo">
 <?php
 
-require 'seguranca.php';
-require 'menu.php';
+require '/var/task/user/api/seguranca.php';
+require '/var/task/user/api/menu.php';
+
+
 
 ?>
 
@@ -54,9 +56,9 @@ require 'menu.php';
       <div class="remetente"> 
          
 
-          <a class="usuario" href="perfil.php?<?php echo $linha->usuario; ?>"> <img src="<?php echo $linha->fotoPerfil ?>"  width="50px" height="50px"><b>  <?php echo $linha->eu ?></b> </a>
+          <a class="usuario" href="api/perfil.php?<?php echo $linha->usuario; ?>"> <img src="<?php echo $linha->fotoPerfil ?>"  width="50px" height="50px"><b>  <?php echo $linha->eu ?></b> </a>
 <?php if($linha->anonimo == 0){ ?>
-          <a class="perguntador" href="perfil.php?<?php echo $linha->nomeRemetente; ?>"> &nbsp<b> <?php echo $linha->apelidoRemetente ?></b> <img src="<?php echo $linha->fotoRemetente ?>"  width="50px" height="50px"></a>
+          <a class="perguntador" href="api/perfil.php?<?php echo $linha->nomeRemetente; ?>"> &nbsp<b> <?php echo $linha->apelidoRemetente ?></b> <img src="<?php echo $linha->fotoRemetente ?>"  width="50px" height="50px"></a>
           <?php }else{ ?>
 
             <a class="perguntador" > &nbsp<b>Bisxcônimo</b> <img src="pic/biscouito.png"  width="50px" height="50px"></a>

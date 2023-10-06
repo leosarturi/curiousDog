@@ -1,11 +1,17 @@
 <?php
 session_start();
-
-require 'config.php';
-require 'Twitter-API-Login-PHP-master/autoload.php';
+echo "aasdasd";
+require '/var/task/user/api/config.php';
+require '/var/task/user/Twitter-API-Login-PHP-master/autoload.php';
 use Abraham\TwitterOAuth\TwitterOAuth;
 
+echo $_SESSION["oauth_token"];
+echo "<br>";
+echo $_SESSION['oauth_token_secret'];
+echo "<br>";
+echo $_REQUEST['oauth_token'];
 if(isset($_SESSION['oauth_token']) && isset($_SESSION['oauth_token_secret'])){
+	echo "foi";
 $request_token = [];
 $request_token['oauth_token'] = $_SESSION['oauth_token'];
 $request_token['oauth_token_secret'] = $_SESSION['oauth_token_secret'];
@@ -28,7 +34,7 @@ $connection = new TwitterOAuth(CONSUMER_KEY,CONSUMER_SECRET, $access_token['oaut
 $user = $connection->get('account/verify_credentials', ['tweet_mode' => 'extended', 'include_entities' => 'true']);
 	//$content = $twitter->get("account/verify_credentials");
 	$array = json_decode(json_encode($user), true);
-	require 'conexao.php';
+	require '/var/task/user/api/conexao.php';
 	$executa=$db->prepare("select usuario,apelido,fotoPerfil,idusuario,senha,banner from usuario where oauth_token=:o");
 	$executa->BindParam(":o",$access_token['oauth_token']);
 	$executa->execute();
@@ -55,7 +61,7 @@ $user = $connection->get('account/verify_credentials', ['tweet_mode' => 'extende
 	$executa3->BindParam(":fotoPerfil", $foto);
 	$executa3->BindParam(":banner", $array['profile_banner_url']);
 	$executa3->execute();
-	header("location: home.php");
+	header("location: /api/home.php");
     }else{
 	$_SESSION['senha'] = $array['id'];
 	$_SESSION['usuario'] = $array['screen_name'];
@@ -67,7 +73,7 @@ $user = $connection->get('account/verify_credentials', ['tweet_mode' => 'extende
 	
 	
 
-	require 'conexao.php';
+	require '/var/task/user/api/conexao.php';
 
 
 
@@ -88,7 +94,7 @@ $user = $connection->get('account/verify_credentials', ['tweet_mode' => 'extende
 				unset($_SESSION['oaut_token_secret']);
 				$_SESSION['idUsuario']=$db->lastInsertId();
                 setcookie("oauth_token",$access_token['oauth_token']);
-				header("Location: perfil.php?" . $_SESSION['usuario']);
+				header("Location: /api/perfil.php?" . $_SESSION['usuario']);
 
 			}
 

@@ -1,6 +1,6 @@
 <?php
-require 'seguranca.php';
-	require 'conexao.php';
+require '/var/task/user/api/seguranca.php';
+	require '/var/task/user/api/conexao.php';
 
 	if(isset($_POST['usuario']) && isset($_POST['mensagem'] ) && isset($_POST['anom'])){
         if($_POST['anom']=="on"){

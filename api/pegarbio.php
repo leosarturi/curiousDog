@@ -1,6 +1,6 @@
 <?php
-	require 'seguranca.php';
-	require 'conexao.php';
+	require '/var/task/user/api/seguranca.php';
+	require '/var/task/user/api/conexao.php';
 
 	$executa = $db->prepare("SELECT bio from usuario where idusuario=:usuario");	
 	$executa->BindParam(":usuario", $_SESSION['idUsuario']);

@@ -1,6 +1,6 @@
 <?php 
-require 'seguranca.php';
-require 'conexao.php';
+require '/var/task/user/api/seguranca.php';
+require '/var/task/user/api/conexao.php';
 
 if(isset($_SESSION['idUsuario'])){
     $executa = $db->prepare("select n.idnotificaresposta as id, usuario.fotoPerfil,usuario.usuario,usuario.apelido,usuario.idusuario, r.idresposta from notificaresposta as n inner join resposta as r on n.resposta=r.idresposta inner join pergunta as p on r.pergunta = p.idpergunta inner join usuario on usuario.idusuario = p.destinatario  where p.remetente = :id && n.visto =0");

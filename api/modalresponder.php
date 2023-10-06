@@ -1,7 +1,7 @@
 <?php
-require 'seguranca.php';
-require 'config.php';
-require 'Twitter-API-Login-PHP-master/autoload.php';
+require '/var/task/user/api/seguranca.php';
+require '/var/task/user/api/config.php';
+require '/var/task/user/Twitter-API-Login-PHP-master/autoload.php';
 
 use Abraham\TwitterOAuth\TwitterOAuth;
 
@@ -9,7 +9,7 @@ if(isset($_POST['idpergunta']) && isset($_POST['resposta']) && isset($_POST['per
 
 echo $_POST['post'];
 echo $_POST['ret'];
-    require 'conexao.php';
+    require '/var/task/user/api/conexao.php';
     $executa = $db->prepare("insert into resposta(pergunta,resposta)values(:p,:r)");
     $executa->BindParam(":p", $_POST['idpergunta']);
     $executa->BindParam(":r", $_POST['resposta']);

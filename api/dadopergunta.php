@@ -2,7 +2,7 @@
 
 if(isset($_POST['idpergunta'])){
 
-require 'conexao.php';
+require '/var/task/user/api/conexao.php';
 $executa = $db->prepare("select anonimo,idpergunta, mensagem, usuario, fotoPerfil, apelido, dataPergunta from pergunta as p inner join usuario as u on p.remetente = u.idusuario left join resposta r on p.idpergunta=r.pergunta where p.idpergunta=:id");
 $executa->BindParam(":id",$_POST['idpergunta']);
 $executa->execute();

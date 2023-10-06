@@ -1,7 +1,7 @@
 <?php
 
-require 'seguranca.php';
-require 'conexao.php';
+require '/var/task/user/api/seguranca.php';
+require '/var/task/user/api/conexao.php';
 if(isset($_POST['idresposta'])){
     $executa = $db->prepare("call curtidas(:a)");
     $executa->BindParam(":a",$_POST['idresposta']);

@@ -6,13 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>bixcoito</title>
     <?php
-    require 'cssheader.php';
+    require '/var/task/user/api/cssheader.php';
      ?>
 </head>
 <body>
 <?php
 session_start();
-require 'menu.php';
+require '/api/menu.php';
 
 
 echo $_SESSION['usuario'];

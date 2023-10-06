@@ -1,5 +1,5 @@
 <?php 
-	require 'conexao.php';
+	require '/var/task/user/api/conexao.php';
 	session_start();
 
 	$executa = $db->prepare("SELECT seguindo.follow, usuario.apelido, usuario.usuario, usuario.idusuario,usuario.fotoPerfil from seguindo inner join usuario on usuario.idusuario = seguindo.follow where seguindo.usuario=:usuario");

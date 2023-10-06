@@ -1,6 +1,6 @@
 <?php
-	require("config.php");
-	require 'Twitter-API-Login-PHP-master/autoload.php';
+	require("/var/task/user/api/config.php");
+	require '/var/task/user/Twitter-API-Login-PHP-master/autoload.php';
 	use Abraham\TwitterOAuth\TwitterOAuth;
 	session_start();
 	
@@ -17,8 +17,7 @@
 
 	$token = new TwitterOAuth(CONSUMER_KEY,CONSUMER_SECRET);
 	$url = $token->url('oauth/authenticate', array('oauth_token' => $request_token['oauth_token']));
-
-	header("location:" . $url);
+	header("Location:" . $url);
 
 	//$_SESSION['oauth_token'] = $request_token['oauth_token'];
 //	$_SESSION['oauth_token_secret'] = $request_token['oauth_token_secret'];

@@ -1,6 +1,6 @@
 <?php 
-require 'seguranca.php';
-require 'conexao.php';
+require '/var/task/user/api/seguranca.php';
+require '/var/task/user/api/conexao.php';
 
 ?>
 
@@ -11,11 +11,11 @@ require 'conexao.php';
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <?php  require 'cssheader.php';?>
+    <?php  require '/var/task/user/api/cssheader.php';?>
 </head>
 <body>
 <img src="pic/logo4.png" id="logo">
-<?php require 'menu.php';?>
+<?php require '/var/task/user/api/menu.php';?>
 <div class="container">
 <div class="search"><input type="search" class="searchinput" placeholder="Procurar..." ><i class="fas fa-search"></i>
 </div>
@@ -175,7 +175,7 @@ body{
         
         $.ajax({
 
-            url:"procurarusuario.php",
+            url:"/var/task/user/api/procurarusuario.php",
             type:"POST",
             data:{"query":query},
             success: function(data){
@@ -183,7 +183,7 @@ body{
                 var dados = JSON.parse(data);
                 for(let [index,d] of dados.entries()){
                     console.log("a");
-                    $(".buscaresult").append('<div class="result"><a href="perfil.php?'+d.usuario+'" class="link"><img src="'+d.fotoPerfil+'" class="perfilimg"><span class="apelido">'+d.apelido+'</span><span class="usuario">@'+d.usuario+'</span></a></div>');
+                    $(".buscaresult").append('<div class="result"><a href="api/perfil.php?'+d.usuario+'" class="link"><img src="'+d.fotoPerfil+'" class="perfilimg"><span class="apelido">'+d.apelido+'</span><span class="usuario">@'+d.usuario+'</span></a></div>');
                 }
             },
             error: function(){

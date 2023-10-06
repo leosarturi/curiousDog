@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>biXcoito</title>
     <?php 
-        require './cssheader.php';
+    
+    
+        require '/var/task/user/api/cssheader.php';
     ?>
     <link href="fontawesome/css/fontawesome.css" rel="stylesheet">
   <link href="fontawesome/css/brands.css" rel="stylesheet">
@@ -15,11 +17,11 @@
 </head>
 <body>
 <header role="banner">
- <img id="logo" src="pic/logo4.png" alt="Logo Thing main logo">
+ <img id="logo" src="/pic/logo4.png" alt="Logo Thing main logo">
 
  </header>
  <div class="container">
-<a href="login.php" class="btn btn-outline-primary"><i class="fab fa-twitter fa-1x"></i> Logar com Twitter</a>
+<a href="api/login.php" class="btn btn-outline-primary"><i class="fab fa-twitter fa-1x"></i> Logar com Twitter</a>
 
 
 </div>
