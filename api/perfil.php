@@ -1,5 +1,5 @@
 <?php 
-require '/var/task/user/api/conexao.php';
+require './conexao.php';
 session_start();
 $seguidores=0;
 $seguindo=0;
@@ -14,11 +14,9 @@ $pegarperfil->execute();
 if($pegarperfil->rowCount()==1){
 
   $pegarperfil = $pegarperfil->fetch(PDO::FETCH_OBJ);
-  $sigo = $db->prepare("call sigo(:usuario,:follow)");
+  
+  $sigo = $db->prepare("select sigo(:usuario,:follow)");
   $sigo->BindParam(":usuario",$_SESSION['idUsuario']);
-  
-  
-  
   $sigo->BindParam(":follow",$pegarperfil->idusuario);
   $sigo->execute();
   $sigo = $sigo->fetch(PDO::FETCH_OBJ);
@@ -30,21 +28,22 @@ if($pegarperfil->rowCount()==1){
 
 }
 }else{
-  header("Location: /api/home.php");
+  header("Location: ./home.php");
 }
 
 if($pegarperfil!=false){
-$executa=$db->prepare("call seguidores(:a)");
+$executa=$db->prepare("select seguidores(:a)");
 $executa->BindParam(":a",$pegarperfil->idusuario);
 $executa->execute();
 
 $linha = $executa->fetch(PDO::FETCH_OBJ);
 $seguidores = $linha->seguidores;
-$executa=$db->prepare("call seguindo(:a)");
+$executa=$db->prepare("select seguindo(:a)");
 $executa->BindParam(":a",$pegarperfil->idusuario);
 $executa->execute();
 $linha = $executa->fetch(PDO::FETCH_OBJ);
 $seguindo = $linha->seguindo;
+
 
 
 
@@ -55,12 +54,12 @@ $seguindo = $linha->seguindo;
   <meta charset="UTF-8">
   <title>CuriousDog</title>
 <?php 
-require '/var/task/user/api/cssheader.php';
+require './cssheader.php';
 ?>
 </head>
 <body>
     <?php 
-    require '/var/task/user/api/menu.php';
+    require './menu.php';
     
     ?>
 
@@ -70,13 +69,13 @@ require '/var/task/user/api/cssheader.php';
 <div class="perfil">
 
 <div class="capa">
-<img src="<?php echo $_SESSION['banner']; ?>" alt="">
+<img src='<?php echo $_COOKIE["banner"] ?>'>
 
 </div>
 
 <div class="nome">
 
-<img class="imgperfil" src="<?php echo $pegarperfil->fotoPerfil; ?>" >
+<img class="imgperfil" src="<?php echo $pegarperfil->fotoperfil; ?>" >
 <br>
 <span class="usuario"><?php echo $pegarperfil->apelido; ?></span>
 <div class="divBio">
@@ -88,17 +87,17 @@ require '/var/task/user/api/cssheader.php';
 
 <div id="botao">
 
-<?php if ($pegarperfil!=false && $_SESSION['idUsuario']== $pegarperfil->idusuario){
+<?php if ($pegarperfil!=false && $_COOKIE['idusuario']== $pegarperfil->idusuario){
     ?> 
    <button onclick='PegarBio(<?php echo $pegarperfil->idusuario ?>)' type="button" class="btn btn-outline-primary btnbio" data-toggle="modal" data-target="#exampleModal2" id="<?php echo $pegarperfil->idusuario ?>" >Editar Bio</button><?php
     
     
-}else if($sigo->segue ==0){
+}else if($sigo->sigo ==0){
   
-    echo '<button href="" id="seguir" class="btn btn-outline-primary segbutton" onclick="seguir(' . $_SESSION['idUsuario']  . ',' . $pegarperfil->idusuario . ')">Seguir</button>';
-}else if($sigo->segue==1){
+    echo '<button href="" id="seguir" class="btn btn-outline-primary segbutton" onclick="seguir(' . $_COOKIE['idusuario']  . ',' . $pegarperfil->idusuario . ')">Seguir</button>';
+}else if($sigo->sigo==1){
   
-    echo '<button href="" id="deseguir" class="btn btn-outline-danger segbutton" onclick="deseguir(' . $_SESSION['idUsuario']  . ',' . $pegarperfil->idusuario . ')">Deixar de Seguir</button>';
+    echo '<button href="" id="deseguir" class="btn btn-outline-danger segbutton" onclick="deseguir(' . $_COOKIE['idusuario']  . ',' . $pegarperfil->idusuario . ')">Deixar de Seguir</button>';
     
    
 } ?>
@@ -178,7 +177,7 @@ if($_SESSION['idUsuario']!== $pegarperfil->idusuario){
 <hr id="linha">
 
 <!-- <input type="text" id="pergunta" class="text_font_resize" maxlength="100" placeholder="Faça uma pergunta"> -->
-<textarea  id="pergunta" maxlength="100" placeholder="Faça uma pergunta"></textarea>
+<textarea  id="pergunta" maxlength="100" placeholder="Faça uma pergunta" required></textarea>
 <br>
 <div class="form-check form-switch">
   <input class="form-check-input" type="checkbox" id="anom">
@@ -382,6 +381,8 @@ margin-bottom:2%;
 </style>
 <script>
 function seguir(usuario, follow) {
+  $('.segbutton').prop('disabled', true);
+  console.log("a");
   $.ajax({
   url: "seguir.php",
   type: "POST",
@@ -397,6 +398,7 @@ function seguir(usuario, follow) {
 }
 
 function deseguir(usuario, follow) {
+  $('.segbutton').prop('disabled', true);
   $.ajax({
   url: "deseguir.php",
   type: "POST",
@@ -423,7 +425,7 @@ function ModalSeguidores(usuario){
  $("#ModalSeguidores").empty();
     for(let [index,d] of dados.entries()){   
       
-                $("#ModalSeguidores").append('<div class="dispseg"><a href="api/perfil.php?' + d.usuario +'"><img src="'+ d.foto+'"><span class="dispn">'+ d.apelido + '</span></a></div>');
+                $("#ModalSeguidores").append('<div class="dispseg"><a href="./perfil.php?' + d.usuario +'"><img src="'+ d.foto+'"><span class="dispn">'+ d.apelido + '</span></a></div>');
         console.log(d);
 
     
@@ -444,7 +446,7 @@ function ModalSeguindo(usuario){
  $("#ModalSeguidores").empty();
     for(let [index,d] of dados.entries()){   
       
-                $("#ModalSeguidores").append('<div class="dispseg"><a href="api/perfil.php?' + d.usuario +'"><img src="'+ d.foto+'"><span class="dispn">'+ d.apelido + '</span></a></div>');
+                $("#ModalSeguidores").append('<div class="dispseg"><a href="./perfil.php?' + d.usuario +'"><img src="'+ d.foto+'"><span class="dispn">'+ d.apelido + '</span></a></div>');
         console.log(d);
 
     
@@ -456,7 +458,8 @@ function ModalSeguindo(usuario){
 }
 function perguntar(usuario){
   var mensagem = $("#pergunta").val();
-  var anom = $("#anom").val();
+  var anom = $("#anom").is(":checked");
+  console.log($("#anom").val());
   console.log(anom);
   $.ajax({
   url: "perguntar.php",

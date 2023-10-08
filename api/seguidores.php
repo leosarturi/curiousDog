@@ -1,5 +1,5 @@
 <?php 
-	require '/var/task/user/api/conexao.php';
+	require './conexao.php';
 	session_start();
 
 	$executa = $db->prepare("SELECT seguindo.follow, usuario.apelido, usuario.usuario, usuario.idusuario,usuario.fotoPerfil from seguindo inner join usuario on usuario.idusuario = seguindo.usuario where seguindo.follow=:usuario");
@@ -11,9 +11,9 @@
     while($linha=$executa->fetch(PDO::FETCH_OBJ)){
     	$count++;
     	if($count == $executa->rowCount()){
-    	$string .= '{"idUsuario":"' . $linha->idusuario . '","usuario": "' . $linha->usuario . '","apelido":"' . $linha->apelido . '","foto":"'.$linha->fotoPerfil .'"}'; 
+    	$string .= '{"idUsuario":"' . $linha->idusuario . '","usuario": "' . $linha->usuario . '","apelido":"' . $linha->apelido . '","foto":"'.$linha->fotoperfil .'"}'; 
     }else{
-    	$string .= '{"idUsuario":"' . $linha->idusuario . '","usuario": "' . $linha->usuario . '","apelido":"' . $linha->apelido . '","foto":"'.$linha->fotoPerfil .'"},'; 
+    	$string .= '{"idUsuario":"' . $linha->idusuario . '","usuario": "' . $linha->usuario . '","apelido":"' . $linha->apelido . '","foto":"'.$linha->fotoperfil .'"},'; 
     }
    	$ret['idUsuario'] = $linha->idusuario; 
    	$ret['apelido'] = $linha->apelido; 

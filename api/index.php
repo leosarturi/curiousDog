@@ -8,7 +8,7 @@
     <?php 
     
     
-        require '/var/task/user/api/cssheader.php';
+        require '../cssheader.php';
     ?>
     <link href="fontawesome/css/fontawesome.css" rel="stylesheet">
   <link href="fontawesome/css/brands.css" rel="stylesheet">
@@ -21,7 +21,7 @@
 
  </header>
  <div class="container">
-<a href="api/login.php" class="btn btn-outline-primary"><i class="fab fa-twitter fa-1x"></i> Logar com Twitter</a>
+<a href="./login.php" class="btn btn-outline-primary"><i class="fab fa-twitter fa-1x"></i> Logar com Twitter</a>
 
 
 </div>

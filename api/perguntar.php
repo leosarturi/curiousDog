@@ -1,18 +1,18 @@
 <?php
-require '/var/task/user/api/seguranca.php';
-	require '/var/task/user/api/conexao.php';
+require './seguranca.php';
+	require './conexao.php';
 
 	if(isset($_POST['usuario']) && isset($_POST['mensagem'] ) && isset($_POST['anom'])){
-        if($_POST['anom']=="on"){
+        if($_POST['anom']=="true"){
             $ba=1;
-        }else if($_POST['anom'] == "off"){
+        }else if($_POST['anom'] == "false"){
             $ba=0;
 
         }
 		$executa = $db->prepare(" INSERT INTO pergunta (mensagem,remetente,destinatario,anonimo) VALUES(:m, :r,:d,:a)");
 		$executa->BindParam(":d", $_POST['usuario']);
 		$executa->BindParam(":m", $_POST['mensagem']);
-        $executa->BindParam(":r", $_SESSION['idUsuario']);
+        $executa->BindParam(":r", $_COOKIE['idusuario']);
         $executa->BindParam(":a", $ba);
 		$executa->execute();
 

@@ -1,15 +1,14 @@
 <?php
+require './seguranca.php';
+require './conexao.php';
 
-require '/var/task/user/api/seguranca.php';
-require '/var/task/user/api/conexao.php';
-if(isset($_POST['idresposta']) && isset($_SESSION['idUsuario'])){
-    $executa = $db->prepare("call curtir(:a,:b)");
-    $executa->BindParam(":a",$_POST['idresposta']);
-    $executa->BindParam(":b",$_SESSION['idUsuario']);
+
+if(isset($_POST['idresposta']) && isset($_COOKIE['idusuario'])){
+    $executa = $db->prepare("INSERT INTO respostacurtida(resposta,usuario) VALUES(:idresp, :idusu)");
+    $executa->BindParam(":idresp", $_POST['idresposta']);
+    $executa->BindParam(":idusu", $_COOKIE['idusuario']);
     $executa->execute();
     if($executa){
-       
-       echo "sucesso";
+        echo "sucesso";
     }
-
 }

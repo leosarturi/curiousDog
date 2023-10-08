@@ -1,6 +1,6 @@
 <?php
-	require '/var/task/user/api/seguranca.php';
-	require '/var/task/user/api/conexao.php';
+	require './seguranca.php';
+	require './conexao.php';
 	
 
 	$executa = $db->prepare("UPDATE usuario SET bio=:bio where idusuario=:idusuario");

@@ -1,25 +1,21 @@
 <?php
 session_start();
-echo "aasdasd";
-require '/var/task/user/api/config.php';
-require '/var/task/user/Twitter-API-Login-PHP-master/autoload.php';
+
+require './config.php';
+require './Twitter-API-Login-PHP-master/autoload.php';
 use Abraham\TwitterOAuth\TwitterOAuth;
 
-echo $_SESSION["oauth_token"];
-echo "<br>";
-echo $_SESSION['oauth_token_secret'];
-echo "<br>";
-echo $_REQUEST['oauth_token'];
-if(isset($_SESSION['oauth_token']) && isset($_SESSION['oauth_token_secret'])){
+
+if(isset($_COOKIE['oauth_token']) && isset($_COOKIE['oauth_token_secret'])){
 	echo "foi";
 $request_token = [];
-$request_token['oauth_token'] = $_SESSION['oauth_token'];
-$request_token['oauth_token_secret'] = $_SESSION['oauth_token_secret'];
+$request_token['oauth_token'] = $_COOKIE['oauth_token'];
+$request_token['oauth_token_secret'] = $_COOKIE['oauth_token_secret'];
 if (isset($_REQUEST['oauth_token']) && $request_token['oauth_token'] !== $_REQUEST['oauth_token'] && !isset($_REQUEST['denied']))  {
     echo 'erroa';	
 }else{
-    unset($_SESSION['oauth_token']);
-    unset($_SESSION['oauth_token_secret']);
+    //unset($_COOKIE['oauth_token']);
+    //unset($_COOKIE['oauth_token_secret']);
     //echo $request_token['oauth_token'];
     echo "<br>";
     //echo $request_token['oauth_token_secret'];
@@ -27,14 +23,13 @@ if (isset($_REQUEST['oauth_token']) && $request_token['oauth_token'] !== $_REQUE
 $twitter = new  TwitterOAuth(CONSUMER_KEY,CONSUMER_SECRET, $request_token['oauth_token'], $request_token['oauth_token_secret']);
 
 $access_token = $twitter->oauth("oauth/access_token", ["oauth_verifier" => $_REQUEST['oauth_verifier']]);
-$_SESSION['access_token'] = $access_token;
 
 $connection = new TwitterOAuth(CONSUMER_KEY,CONSUMER_SECRET, $access_token['oauth_token'], $access_token['oauth_token_secret']);
 
 $user = $connection->get('account/verify_credentials', ['tweet_mode' => 'extended', 'include_entities' => 'true']);
 	//$content = $twitter->get("account/verify_credentials");
 	$array = json_decode(json_encode($user), true);
-	require '/var/task/user/api/conexao.php';
+	require './conexao.php';
 	$executa=$db->prepare("select usuario,apelido,fotoPerfil,idusuario,senha,banner from usuario where oauth_token=:o");
 	$executa->BindParam(":o",$access_token['oauth_token']);
 	$executa->execute();
@@ -46,11 +41,19 @@ $user = $connection->get('account/verify_credentials', ['tweet_mode' => 'extende
 	}
 	
 		if(isset($linha->idusuario)){
+			setcookie('usuario',$linha->usuario);
+			setcookie('apelido',$linha->apelido);
+			setcookie('foto',$linha->fotoperfil);
+			setcookie('idusuario',$linha->idusuario);
+			setcookie('senha',$linha->senha);
+			setcookie('banner',$linha->banner);
+
+
 	$_SESSION['usuario'] = $linha->usuario;
 	$_SESSION['apelido'] = $linha->apelido;
-	$_SESSION['foto'] = $linha->fotoPerfil;
-	$_SESSION['idUsuario'] = $linha->idusuario;
-	$_SESSION['senha'] = $linha->senha;
+	$_SESSION['foto'] = $linha->fotoperfil;
+	$_SESSION['idusuario'] = $linha->idusuario;
+	
 	$_SESSION['banner'] = $linha->banner;
 	$executa3=$db->prepare("UPDATE usuario SET usuario=:usuario, apelido=:apelido, fotoPerfil=:fotoPerfil, banner=:banner where idusuario=:id ");
 	$executa3->BindParam(":id", $linha->idusuario);
@@ -61,7 +64,7 @@ $user = $connection->get('account/verify_credentials', ['tweet_mode' => 'extende
 	$executa3->BindParam(":fotoPerfil", $foto);
 	$executa3->BindParam(":banner", $array['profile_banner_url']);
 	$executa3->execute();
-	header("location: /api/home.php");
+	header("location: ./home.php");
     }else{
 	$_SESSION['senha'] = $array['id'];
 	$_SESSION['usuario'] = $array['screen_name'];
@@ -70,31 +73,58 @@ $user = $connection->get('account/verify_credentials', ['tweet_mode' => 'extende
 	$foto = $varfoto[0] . $varfoto[1];
 	$_SESSION['foto'] = $foto;
 	$_SESSION['banner'] = $array['profile_banner_url'];
+	setcookie('usuario',$array['screen_name']);
+	echo $array['id'];
+	setcookie("senha",$array['id']);
+			setcookie('apelido',$array['name']);
+			
+			setcookie('foto',$foto);
+			setcookie('idusuario',$array['id']);
+			setcookie('banner',$array['profile_banner_url']);
 	
 	
+	
 
-	require '/var/task/user/api/conexao.php';
-
-
-
+	require './conexao.php';
 
 
+			$check = $db->prepare("SELECT idusuario from usuario where usuario =:a");
+			$check->BindParam(":a", $_COOKIE['usuario']);
+			$check->execute();
+			if($check->rowCount()>=1){
+				$ret = $check->fetch(PDO::FETCH_OBJ);
+				setcookie('idusuario',$ret->idusuario);
+				header("Location: ./perfil.php?" . $_COOKIE['usuario']);
+			}
 
 
-			$executa2=$db->prepare("INSERT into usuario(usuario,senha,apelido,fotoPerfil,oauth_token,oauth_token_secret) values(:usuario,:senha,:apelido,:fotoPerfil,:token,:token_secret)");
-			$executa2->BindParam(":usuario", $_SESSION['usuario']);
-			$executa2->BindParam(":senha", $_SESSION['senha']);
-			$executa2->BindParam(":apelido", $_SESSION['apelido']);
-			$executa2->BindParam(":fotoPerfil", $_SESSION['foto']);
+
+
+			$executa2=$db->prepare("INSERT into usuario(usuario,senha,apelido,fotoPerfil,oauth_token,oauth_token_secret,banner) values(:usuario,:senha,:apelido,:fotoPerfil,:token,:token_secret,:banner)");
+			echo $_COOKIE['idusuario'];
+			echo $_COOKIE['usuario'];
+			echo $_COOKIE['senha'];
+			echo $_COOKIE['apelido'];
+			echo $_COOKIE['foto'];
+			echo $_COOKIE['oauth_token'];
+			echo $_COOKIE['oauth_token_secret'];
+			echo $_COOKIE['banner'];
+		
+			$executa2->BindParam(":usuario", $_COOKIE['usuario']);
+			$executa2->BindParam(":senha", $_COOKIE['senha']);
+			$executa2->BindParam(":apelido", $_COOKIE['apelido']);
+			$executa2->BindParam(":fotoPerfil", $_COOKIE['foto']);
             
-            $executa2->BindParam(":token", $_SESSION['access_token']['oauth_token']);
-            $executa2->BindParam(":token_secret",  $_SESSION['access_token']['oauth_token_secret']);
+            $executa2->BindParam(":token", $_COOKIE['oauth_token']);
+            $executa2->BindParam(":token_secret",  $_COOKIE['oauth_token_secret']);
+			$executa2->BindParam(":banner", $_COOKIE['banner'] );
 			$executa2->execute();
 			if($executa2){
-				unset($_SESSION['oaut_token_secret']);
-				$_SESSION['idUsuario']=$db->lastInsertId();
+				var_dump( $executa2);
+				unset($_COOKIE['oaut_token_secret']);
+				setcookie('idusuario',$db->lastInsertId());
                 setcookie("oauth_token",$access_token['oauth_token']);
-				header("Location: /api/perfil.php?" . $_SESSION['usuario']);
+				header("Location: ./perfil.php?" . $_COOKIE['usuario']);
 
 			}
 

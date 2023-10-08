@@ -1,6 +1,6 @@
 <?php 
-	require '/var/task/user/api/seguranca.php';
-	require '/var/task/user/api/conexao.php';
+	require './seguranca.php';
+	require './conexao.php';
 
 	if(isset($_POST['usuario']) && isset($_POST['follow'] )){
 		$executa = $db->prepare(" DELETE FROM seguindo where usuario=:usuario and follow=:follow");

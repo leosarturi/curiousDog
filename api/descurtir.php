@@ -1,11 +1,11 @@
 <?php
 
-require '/var/task/user/api/seguranca.php';
-require '/var/task/user/api/conexao.php';
-if(isset($_POST['idresposta']) && isset($_SESSION['idUsuario'])){
+require './seguranca.php';
+require './conexao.php';
+if(isset($_POST['idresposta']) && isset($_COOKIE['idusuario'])){
     $executa = $db->prepare("call descurtir(:a,:b)");
     $executa->BindParam(":a",$_POST['idresposta']);
-    $executa->BindParam(":b",$_SESSION['idUsuario']);
+    $executa->BindParam(":b",$_COOKIE['idUsuario']);
     $executa->execute();
     if($executa){
        

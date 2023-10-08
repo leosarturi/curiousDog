@@ -4,18 +4,19 @@
   <meta charset="utf-8">
   <title></title>
   <?php
-  require '/var/task/user/api/cssheader.php';
+  require './cssheader.php';
   
   ?>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
 
 <img src="pic/logo4.png" id="logo">
   <?php
   
-require '/var/task/user/api/seguranca.php';
-require '/var/task/user/api/menu.php';
+require './seguranca.php';
+require './menu.php';
 ?>
 
 <div class="container">
@@ -25,7 +26,7 @@ require '/var/task/user/api/menu.php';
 <?php
   include("conexao.php");
   $executa=$db->prepare("select anonimo,idpergunta, mensagem, usuario, fotoPerfil, apelido, dataPergunta from pergunta as p inner join usuario as u on p.remetente = u.idusuario left join resposta r on p.idpergunta=r.pergunta where p.destinatario=:id and r.pergunta is null;");
-  $executa->BindParam(":id",$_SESSION['idUsuario']);
+  $executa->BindParam(":id",$_COOKIE['idusuario']);
   $executa->execute();
 
   while($linha=$executa->fetch(PDO::FETCH_OBJ)){
@@ -36,12 +37,12 @@ require '/var/task/user/api/menu.php';
           <a class="usuario" > <img src="pic/biscouito.png"  width="50px" height="50px"><b> Bixcônimo</b></a>
 <?php }else{  ?>
 
-  <a class="usuario" href="api/perfil.php?<?php echo $linha->usuario; ?>"> <img src="<?php echo $linha->fotoPerfil ?>"  width="50px" height="50px"><b> <?php echo $linha->apelido ?></b></a>
+  <a class="usuario" href="./perfil.php?<?php echo $linha->usuario; ?>"> <img src="<?php echo $linha->fotoperfil ?>"  width="50px" height="50px"><b> <?php echo $linha->apelido ?></b></a>
 
 <?php  }?>
         <div class="data">
           <?php
-          echo $linha->dataPergunta;
+          echo $linha->datapergunta;
           ?>
           </div>
            </div>
@@ -96,7 +97,7 @@ require '/var/task/user/api/menu.php';
 </div>
 
         <button type="button" id="fecharmodal" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-        <button type="button" class="btn btn-primary" onclick="responder()">Responder</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="responder()">Responder</button>
       </div>
     </div>
   </div>
@@ -208,7 +209,7 @@ float:right;
 
  function modal(idpergunta){
 
- 
+  //$('#exampleModal').modal('show');
 
   $.ajax({
   type: "POST",
@@ -260,7 +261,10 @@ console.log(post);
   data: {'idpergunta':idpe , 'resposta':resposta,'pergunta':mensagem,'post':post, 'ret':ret},
   
   beforeSend: function(){
-    $("#fecharmodal").click();
+    //$('#exampleModal').modal('hide');
+    
+//$('.modal-backdrop').remove();
+    
     $("#"+idpe).parent().remove();
     $("#post").prop('checked',false);
     $("#ret").prop('checked',false);
@@ -276,48 +280,6 @@ console.log(post);
 
   
 }
-const colors = ["#722d0534", "#722d0534", "#722d0534", "#722d0534", "#722d0534"];
-
-const numBalls = 100;
-const balls = [];
-
-for (let i = 0; i < numBalls; i++) {
-  let ball = document.createElement("div");
-  ball.classList.add("ball");
-  ball.style.background = colors[Math.floor(Math.random() * colors.length)];
-  ball.style.left = `${Math.floor(Math.random() * 85)}vw`;
-  ball.style.top = `${Math.floor(Math.random() * 85)}vh`;
-  ball.style.transform = `scale(${Math.random()})`;
-  ball.style.width = `${Math.random()}em`;
-  ball.style.height = ball.style.width;
-  
-  balls.push(ball);
-  document.body.append(ball);
-}
-
-// Keyframes
-balls.forEach((el, i, ra) => {
-  let to = {
-    x: Math.random() * (i % 2 === 0 ? -11 : 11),
-    y: Math.random() * 12
-  };
-
-  let anim = el.animate(
-    [
-      { transform: "translate(0, 0)" },
-      { transform: `translate(${to.x}rem, ${to.y}rem)` }
-    ],
-    {
-      
-      duration: (Math.random() + 1) * 2000, // random duration
-      direction: "alternate",
-      fill: "both",
-      iterations: Infinity,
-      
-      easing: "ease-in-out"
-    }
-  );
-});
 
 
 </script>

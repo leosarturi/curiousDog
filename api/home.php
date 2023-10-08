@@ -2,17 +2,18 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title></title>
+  <title>Home</title>
   <?php 
-  require '/var/task/user/api/cssheader.php';
+  require './cssheader.php';
   ?>
+
 </head>
 <body >
 <img src="pic/logo4.png" id="logo">
 <?php
 
-require '/var/task/user/api/seguranca.php';
-require '/var/task/user/api/menu.php';
+require './seguranca.php';
+require './menu.php';
 
 
 
@@ -23,14 +24,14 @@ require '/var/task/user/api/menu.php';
 <?php
   include("conexao.php"); 
   $executa=$db->prepare("select u.idusuario as idRemetente,p.anonimo as anonimo,u.usuario as nomeRemetente,u.apelido as apelidoRemetente,u.fotoPerfil as fotoRemetente, idresposta, pergunta, dataResposta, resposta, p.idpergunta, p.mensagem as mensagem, p.remetente, us.fotoPerfil as fotoPerfil, us.apelido as eu, us.usuario as usuario from resposta as r inner join pergunta as p on r.pergunta = p.idpergunta inner join usuario as u on u.idusuario=p.remetente inner join usuario as us on us.idusuario=p.destinatario where p.destinatario in (select seg.follow from seguindo as seg where seg.usuario=:id) or p.destinatario=:id order by dataResposta desc;");
-  $executa->BindParam(":id", $_SESSION['idUsuario']);
+  $executa->BindParam(":id", $_COOKIE['idusuario']);
   $executa->execute();
 
 
   while($linha=$executa->fetch(PDO::FETCH_OBJ)){
-    $executa2=$db->prepare("call curto(:a,:b);");
+    $executa2=$db->prepare("select curto(:b,:a);");
     $executa2->BindParam(":a",$linha->idresposta);
-    $executa2->BindParam(":b",$_SESSION['idUsuario']);
+    $executa2->BindParam(":b",$_COOKIE['idusuario']);
     $executa2->execute();
     if($executa2){
       $linha2 =$executa2->fetch(PDO::FETCH_OBJ);
@@ -38,12 +39,12 @@ require '/var/task/user/api/menu.php';
       
     }
   
-    $executa2=$db->prepare("call curtidas(:a);");
-    $executa2->BindParam(":a",$linha->idresposta);
+    $executa3=$db->prepare("select curtidas(:a);");
+    $executa3->BindParam(":a",$linha->idresposta);
     
-    $executa2->execute();
-    if($executa2){
-      $linha3 =$executa2->fetch(PDO::FETCH_OBJ);
+    $executa3->execute();
+    if($executa3){
+      $linha3 =$executa3->fetch(PDO::FETCH_OBJ);
       
       
     }
@@ -56,9 +57,9 @@ require '/var/task/user/api/menu.php';
       <div class="remetente"> 
          
 
-          <a class="usuario" href="api/perfil.php?<?php echo $linha->usuario; ?>"> <img src="<?php echo $linha->fotoPerfil ?>"  width="50px" height="50px"><b>  <?php echo $linha->eu ?></b> </a>
+          <a class="usuario" href="./perfil.php?<?php echo $linha->usuario; ?>"> <img src="<?php echo $linha->fotoperfil ?>"  width="50px" height="50px"><b>  <?php echo $linha->eu ?></b> </a>
 <?php if($linha->anonimo == 0){ ?>
-          <a class="perguntador" href="api/perfil.php?<?php echo $linha->nomeRemetente; ?>"> &nbsp<b> <?php echo $linha->apelidoRemetente ?></b> <img src="<?php echo $linha->fotoRemetente ?>"  width="50px" height="50px"></a>
+          <a class="perguntador" href="./perfil.php?<?php echo $linha->nomeremetente; ?>"> &nbsp<b> <?php echo $linha->apelidoremetente ?></b> <img src="<?php echo $linha->fotoremetente ?>"  width="50px" height="50px"></a>
           <?php }else{ ?>
 
             <a class="perguntador" > &nbsp<b>Bisxcônimo</b> <img src="pic/biscouito.png"  width="50px" height="50px"></a>
@@ -68,7 +69,7 @@ require '/var/task/user/api/menu.php';
 
         <div class="data">
           <?php
-          echo $linha->dataResposta;
+          echo $linha->dataresposta;
           ?>
           </div>
            </div>
@@ -123,9 +124,11 @@ require '/var/task/user/api/menu.php';
       .mensagem{
 
         width: 100%;
-        background-color: #141211;
+        background-color: #28282852;
         border-left: 3px solid white;
-        margin-top: 2%;
+        padding-bottom: 2%;
+        padding-top: 2%;
+        margin-top:1%;
 
 
 
@@ -150,7 +153,7 @@ require '/var/task/user/api/menu.php';
       .data{
         color: white;
         float: right;
-        margin-right: 1%px;
+        margin-right: 1%;
         margin-top: 1.5%;
         opacity: 60%;
         font-size: clamp(0.3em, 0.5em + 1vw, 0.7em);
@@ -188,7 +191,7 @@ require '/var/task/user/api/menu.php';
       .curtir{
         float: right;
         margin-right: 3%;
-        margin-top: 1%;
+        margin-top: 0.5%;
 
 
       }
@@ -213,8 +216,7 @@ require '/var/task/user/api/menu.php';
 </style>
 
 <script>
-
-function curtidas(idresposta){
+function  curtidas(idresposta){
   $.ajax({
   url: "curtidas.php",
   type: "POST",
@@ -222,6 +224,7 @@ function curtidas(idresposta){
 }).done(function(data) {
   var dados = JSON.parse(data);
  $("#"+idresposta).text(dados.curtidas);
+ return dados.curtidas;
 
  
  
@@ -233,17 +236,24 @@ function curtidas(idresposta){
 })
 }
 function curtir(idresposta){
+  $(".id" +idresposta).append('<a id="botd'+idresposta+'" disabled><img src="pic/visivel.png" class="like" width="25" height="25"></a>');
+    $("#botc" + idresposta).remove();
+    $("#"+idresposta).text( parseInt($("#"+idresposta).text())+1);
   $.ajax({
   url: "curtir.php",
   type: "POST",
   data:{'idresposta' :idresposta}
 }).done(function(data) {
   if(data="sucesso"){
-    
-    curtidas(idresposta);
-    
+    console.log(a);
+    var a=curtidas(idresposta);
+    $("#botd" + idresposta).remove();
     $(".id" +idresposta).append('<a onclick="descurtir('+idresposta+')" id="botd'+idresposta+'"><img src="pic/visivel.png" class="like" width="25" height="25"></a>');
-    $("#botc" + idresposta).remove();
+    
+   
+  }else{
+    $(".id" +idresposta).append('<a onclick="curtir('+idresposta+')" id="botc'+idresposta+'"><img src="pic/apagado.png" class="like" width="25" height="25"></a>');
+    $("#botd" + idresposta).remove();
   }
 
  
@@ -257,6 +267,9 @@ function curtir(idresposta){
 }
 
 function descurtir(idresposta){
+  $(".id" +idresposta).append('<a id="botc'+idresposta+'" disabled><img src="pic/apagado.png" class="like" width="25" height="25"></a>');
+    $("#botd" + idresposta).remove();
+    $("#"+idresposta).text( parseInt($("#"+idresposta).text())-1);
   $.ajax({
   url: "descurtir.php",
   type: "POST",
@@ -265,9 +278,13 @@ function descurtir(idresposta){
   if(data="sucesso"){
     
     curtidas(idresposta);
-
+    $("#botc" + idresposta).remove();
     $(".id" +idresposta).append('<a onclick="curtir('+idresposta+')" id="botc'+idresposta+'"><img src="pic/apagado.png" class="like" width="25" height="25"></a>');
-    $("#botd" + idresposta).remove();
+
+   
+  }else{
+    $(".id" +idresposta).append('<a onclick="descurtir('+idresposta+')" id="botd'+idresposta+'"><img src="pic/visivel.png" class="like" width="25" height="25"></a>');
+    $("#botc" + idresposta).remove();
   }
 
  

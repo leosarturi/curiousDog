@@ -1,5 +1,5 @@
 <?php
-session_start();
-if(!isset($_SESSION['senha'])){
-    header("Location: /api/index.php");
+//session_start();
+if(!isset($_COOKIE['idusuario'])){
+    header("Location: ./index.php");
 }
