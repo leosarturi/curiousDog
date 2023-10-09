@@ -62,7 +62,7 @@ require 'menu.php';
           <a class="perguntador" href="perfil.php?<?php echo $linha->nomeremetente; ?>"> &nbsp<b> <?php echo $linha->apelidoremetente ?></b> <img src="<?php echo $linha->fotoremetente ?>"  width="50px" height="50px"></a>
           <?php }else{ ?>
 
-            <a class="perguntador" > &nbsp<b>Bisxcônimo</b> <img src="pic/biscouito.png"  width="50px" height="50px"></a>
+            <a class="perguntador" > &nbsp<b>Bisxcônimo</b> <img src="https://cdn-icons-png.flaticon.com/512/4123/4123751.png"  width="50px" height="50px"></a>
 
             <?php }?>
 

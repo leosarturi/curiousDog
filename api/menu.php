@@ -207,7 +207,7 @@ for(let [index,a] of dados.entries()){
 }else if(typeof d.idpergunta !== 'undefined'){
   console.log(d.apelido);
   if(d.apelido==""){
-    $(".on").append('<div class="do"><a ><img src="pic/biscouito.png"> Você recebeu uma pergunta anônima  </a></div>');
+    $(".on").append('<div class="do"><a ><img src="https://cdn-icons-png.flaticon.com/512/4123/4123751.png"> Você recebeu uma pergunta anônima  </a></div>');
   }else{
     $(".on").append('<div class="do"><a ><img src="'+d.fotoperfil+'">'+ d.apelido +' te fez uma pergunta  </a></div>');
   }
@@ -238,7 +238,7 @@ for(let [index,a] of dados.entries()){
       $(".noti").append('<div class="dn"><a ><img src="'+d.fotoperfil+'">'+ d.apelido +' respondeu sua pergunta </a></div>');
 }else if(typeof d.idpergunta !== 'undefined'){
  if(d.apelido=='') {
-  $(".noti").append('<div class="dn"><a ><img src="pic/biscouito.png"> Você recebeu uma pergunta anônima </a></div>');
+  $(".noti").append('<div class="dn"><a ><img src="https://cdn-icons-png.flaticon.com/512/4123/4123751.png"> Você recebeu uma pergunta anônima </a></div>');
  }else{
   $(".noti").append('<div class="dn"><a ><img src="'+d.fotoperfil+'">'+ d.apelido +' te fez uma pergunta  </a></div>');
  }

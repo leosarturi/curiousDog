@@ -34,7 +34,7 @@ require 'menu.php';
     <div class="mensagem">
       <div class="remetente"> 
       <?php if($linha->anonimo==1){ ?>
-          <a class="usuario" > <img src="pic/biscouito.png"  width="50px" height="50px"><b> Bixcônimo</b></a>
+          <a class="usuario" > <img src="https://cdn-icons-png.flaticon.com/512/4123/4123751.png"  width="50px" height="50px"><b> Bixcônimo</b></a>
 <?php }else{  ?>
 
   <a class="usuario" href="perfil.php?<?php echo $linha->usuario; ?>"> <img src="<?php echo $linha->fotoperfil ?>"  width="50px" height="50px"><b> <?php echo $linha->apelido ?></b></a>
