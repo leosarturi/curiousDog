@@ -14,7 +14,7 @@ require 'conexao.php';
     <?php  require 'cssheader.php';?>
 </head>
 <body>
-<img src="pic/logo4.png" id="logo">
+<img src="https://cdn.discordapp.com/attachments/665670957637173256/1160770245376606338/logo4.png?ex=6535de88&is=65236988&hm=56804b54ec1f470f5321bb58c7a94116d6bca829898b17afa7539d45520b61c6&" id="logo">
 <?php require 'menu.php';?>
 <div class="container">
 <div class="search"><input type="search" class="searchinput" placeholder="Procurar..." ><i class="fas fa-search"></i>

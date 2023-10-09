@@ -10,10 +10,11 @@ if(isset($_POST['idpergunta']) && isset($_POST['resposta']) && isset($_POST['per
 echo $_POST['post'];
 echo $_POST['ret'];
     require 'conexao.php';
-    $executa = $db->prepare("insert into resposta(pergunta,resposta)values(:p,:r)");
+    $executa = $db->prepare("insert into resposta(pergunta,resposta)values(:p,:r);");
     $executa->BindParam(":p", $_POST['idpergunta']);
     $executa->BindParam(":r", $_POST['resposta']);
     $executa->execute();
+   
     if($executa){
         if($_POST['post']=="true"){        
 $executa2= $db->prepare("select oauth_token , oauth_token_secret from pergunta inner join usuario on usuario.idUsuario = pergunta.destinatario where idpergunta=:id");
@@ -23,6 +24,10 @@ if($executa2){
     $linha=$executa2->fetch(PDO::FETCH_OBJ);
     $access_token['oauth_token']= $linha->oauth_token;
     $access_token['oauth_token_secret']= $linha->oauth_token_secret;
+
+    $noti = $db->prepare("INSERT into notificaresposta(resposta,visto) values(:r,0);");
+    $noti->BindParam(":r", $_POST['resposta']);
+    $noti->execute();
 }else{
     echo "erro";
 }
