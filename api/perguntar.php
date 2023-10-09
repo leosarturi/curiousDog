@@ -1,6 +1,6 @@
 <?php
-require './seguranca.php';
-	require './conexao.php';
+require 'seguranca.php';
+	require 'conexao.php';
 
 	if(isset($_POST['usuario']) && isset($_POST['mensagem'] ) && isset($_POST['anom'])){
         if($_POST['anom']=="true"){

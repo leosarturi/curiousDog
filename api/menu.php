@@ -7,7 +7,7 @@ $url=$_SERVER["REQUEST_URI"];
   
 <div class="bs-example">
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-bottom">
-        <a href="./perfil.php?<?php echo $_COOKIE['usuario']; ?>" class="navbar-brand"><?php echo $_COOKIE['apelido']; ?></a>
+        <a href="perfil.php?<?php echo $_COOKIE['usuario']; ?>" class="navbar-brand"><?php echo $_COOKIE['apelido']; ?></a>
         <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -15,15 +15,19 @@ $url=$_SERVER["REQUEST_URI"];
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav">
             <?php 
-            if($url =="/curiousdog/home.php"){
-              echo '<a href="./home.php" class="nav-item nav-link active"><i class="fas fa-home"></i></a>';
+            if($url =="/api/home.php"){
+              
+              echo '<a href="home.php" class="nav-item nav-link active"><i class="fas fa-home"></i></a>';
             }else{
-              echo '<a href="./home.php" class="nav-item nav-link "><i class="fas fa-home"></i></a>';
+              
+              echo '<a href="home.php" class="nav-item nav-link "><i class="fas fa-home"></i></a>';
             }
-            if($url == "/curiousdog/pergunta.php"){
-echo '  <a href="./pergunta.php" class="nav-item nav-link active"><i class="fas fa-question"></i></a>';
+            if($url == "/api/pergunta.php"){
+              
+echo '  <a href="pergunta.php" class="nav-item nav-link active"><i class="fas fa-question"></i></a>';
             }else{
-              echo '<a href="./pergunta.php" class="nav-item nav-link"><i class="fas fa-question"></i></a>';
+              
+              echo '<a href="pergunta.php" class="nav-item nav-link"><i class="fas fa-question"></i></a>';
             }
 
 
@@ -35,13 +39,13 @@ echo '  <a href="./pergunta.php" class="nav-item nav-link active"><i class="fas 
 
                   
                 <a href="#" class="nav-item nav-link" data-toggle="modal" data-target="#modalnoti" onclick="notifica(<?php echo $_COOKIE['idusuario'] ?>)"><i class="fas fa-bell"></i><span class="badge bg-primary">0</span></a>
-                <a href="./procurar.php" class="nav-item nav-link"><i class="fas fa-search"> </i></a>
+                <a href="procurar.php" class="nav-item nav-link"><i class="fas fa-search"> </i></a>
 
   
             </div>
 
             <div class="navbar-nav ml-auto">
-                <a href="./logoff.php" class="nav-item nav-link">Sair</a>
+                <a href="logoff.php" class="nav-item nav-link">Sair</a>
             </div>
 
         </div>
@@ -203,7 +207,7 @@ for(let [index,a] of dados.entries()){
 }else if(typeof d.idpergunta !== 'undefined'){
   console.log(d.apelido);
   if(d.apelido==""){
-    $(".on").append('<div class="do"><a ><img src="./pic/biscouito.png"> Você recebeu uma pergunta anônima  </a></div>');
+    $(".on").append('<div class="do"><a ><img src="pic/biscouito.png"> Você recebeu uma pergunta anônima  </a></div>');
   }else{
     $(".on").append('<div class="do"><a ><img src="'+d.fotoperfil+'">'+ d.apelido +' te fez uma pergunta  </a></div>');
   }
@@ -234,7 +238,7 @@ for(let [index,a] of dados.entries()){
       $(".noti").append('<div class="dn"><a ><img src="'+d.fotoperfil+'">'+ d.apelido +' respondeu sua pergunta </a></div>');
 }else if(typeof d.idpergunta !== 'undefined'){
  if(d.apelido=='') {
-  $(".noti").append('<div class="dn"><a ><img src="./pic/biscouito.png"> Você recebeu uma pergunta anônima </a></div>');
+  $(".noti").append('<div class="dn"><a ><img src="pic/biscouito.png"> Você recebeu uma pergunta anônima </a></div>');
  }else{
   $(".noti").append('<div class="dn"><a ><img src="'+d.fotoperfil+'">'+ d.apelido +' te fez uma pergunta  </a></div>');
  }

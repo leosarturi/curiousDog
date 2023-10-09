@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <title></title>
   <?php
-  require './cssheader.php';
+  require 'cssheader.php';
   
   ?>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -15,8 +15,8 @@
 <img src="pic/logo4.png" id="logo">
   <?php
   
-require './seguranca.php';
-require './menu.php';
+require 'seguranca.php';
+require 'menu.php';
 ?>
 
 <div class="container">
@@ -37,7 +37,7 @@ require './menu.php';
           <a class="usuario" > <img src="pic/biscouito.png"  width="50px" height="50px"><b> Bixcônimo</b></a>
 <?php }else{  ?>
 
-  <a class="usuario" href="./perfil.php?<?php echo $linha->usuario; ?>"> <img src="<?php echo $linha->fotoperfil ?>"  width="50px" height="50px"><b> <?php echo $linha->apelido ?></b></a>
+  <a class="usuario" href="perfil.php?<?php echo $linha->usuario; ?>"> <img src="<?php echo $linha->fotoperfil ?>"  width="50px" height="50px"><b> <?php echo $linha->apelido ?></b></a>
 
 <?php  }?>
         <div class="data">

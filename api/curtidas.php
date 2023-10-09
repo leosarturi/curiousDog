@@ -1,7 +1,7 @@
 <?php
 
-require './seguranca.php';
-require './conexao.php';
+require 'seguranca.php';
+require 'conexao.php';
 if(isset($_POST['idresposta'])){
     $executa = $db->prepare("select curtidas(:a)");
     $executa->BindParam(":a",$_POST['idresposta']);

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <title>Home</title>
   <?php 
-  require './cssheader.php';
+  require 'cssheader.php';
   ?>
 
 </head>
@@ -12,8 +12,8 @@
 <img src="pic/logo4.png" id="logo">
 <?php
 
-require './seguranca.php';
-require './menu.php';
+require 'seguranca.php';
+require 'menu.php';
 
 
 
@@ -57,9 +57,9 @@ require './menu.php';
       <div class="remetente"> 
          
 
-          <a class="usuario" href="./perfil.php?<?php echo $linha->usuario; ?>"> <img src="<?php echo $linha->fotoperfil ?>"  width="50px" height="50px"><b>  <?php echo $linha->eu ?></b> </a>
+          <a class="usuario" href="perfil.php?<?php echo $linha->usuario; ?>"> <img src="<?php echo $linha->fotoperfil ?>"  width="50px" height="50px"><b>  <?php echo $linha->eu ?></b> </a>
 <?php if($linha->anonimo == 0){ ?>
-          <a class="perguntador" href="./perfil.php?<?php echo $linha->nomeremetente; ?>"> &nbsp<b> <?php echo $linha->apelidoremetente ?></b> <img src="<?php echo $linha->fotoremetente ?>"  width="50px" height="50px"></a>
+          <a class="perguntador" href="perfil.php?<?php echo $linha->nomeremetente; ?>"> &nbsp<b> <?php echo $linha->apelidoremetente ?></b> <img src="<?php echo $linha->fotoremetente ?>"  width="50px" height="50px"></a>
           <?php }else{ ?>
 
             <a class="perguntador" > &nbsp<b>Bisxcônimo</b> <img src="pic/biscouito.png"  width="50px" height="50px"></a>

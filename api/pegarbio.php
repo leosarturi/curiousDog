@@ -1,6 +1,6 @@
 <?php
-	require './seguranca.php';
-	require './conexao.php';
+	require 'seguranca.php';
+	require 'conexao.php';
 
 	$executa = $db->prepare("SELECT bio from usuario where idusuario=:usuario");	
 	$executa->BindParam(":usuario", $_SESSION['idUsuario']);

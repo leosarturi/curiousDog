@@ -1,6 +1,6 @@
 <?php 
-require './seguranca.php';
-require './conexao.php';
+require 'seguranca.php';
+require 'conexao.php';
 
 
 if(isset($_COOKIE['idusuario'])){

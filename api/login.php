@@ -1,7 +1,7 @@
 <?php
 session_start();
-	require("./config.php");
-	require './Twitter-API-Login-PHP-master/autoload.php';
+	require("config.php");
+	require 'Twitter-API-Login-PHP-master/autoload.php';
 	use Abraham\TwitterOAuth\TwitterOAuth;
 	
 	

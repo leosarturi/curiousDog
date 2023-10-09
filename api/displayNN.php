@@ -1,6 +1,6 @@
 <?php 
-require './seguranca.php';
-require './conexao.php';
+require 'seguranca.php';
+require 'conexao.php';
 
 if(isset($_COOKIE['idusuario'])){
     $executa = $db->prepare("select n.idnotificaresposta as id, usuario.fotoPerfil,usuario.usuario,usuario.apelido,usuario.idusuario, r.idresposta from notificaresposta as n inner join resposta as r on n.resposta=r.idresposta inner join pergunta as p on r.pergunta = p.idpergunta inner join usuario on usuario.idusuario = p.destinatario  where p.remetente = :id and n.visto =0");
